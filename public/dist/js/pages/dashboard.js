@@ -42,10 +42,12 @@ $(function () {
     },
     startDate: moment().subtract(29, 'days'),
     endDate: moment()
-  }, function (start, end) {
-    // eslint-disable-next-line no-alert
-    alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-  })
+  },
+  //  function (start, end) {
+  //   // eslint-disable-next-line no-alert
+  //   alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+  // }
+  )
 
   /* jQueryKnob */
   $('.knob').knob()

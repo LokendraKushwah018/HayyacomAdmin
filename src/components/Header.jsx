@@ -9,13 +9,7 @@ const Header = () => {
     <li className="nav-item">
       <a className="nav-link" data-widget="pushmenu" href="#" role="button"><i className="fas fa-bars" /></a>
     </li>
-    <li className="nav-item d-none d-sm-inline-block">
-      <Link to="/Home" className="nav-link">Home</Link>
-    </li>
-  
-    <li className="nav-item d-none d-sm-inline-block">
-      <a href="#" className="nav-link">Contact</a>
-    </li>
+   
   </ul>
   <ul className="navbar-nav ml-auto">
     <li className="nav-item">
@@ -120,11 +114,11 @@ const Header = () => {
         <i className="fas fa-expand-arrows-alt" />
       </a>
     </li>
-    <li className="nav-item">
+    {/* <li className="nav-item">
       <a className="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
         <i className="fas fa-th-large" />
       </a>
-    </li>
+    </li> */}
   </ul>
 </nav>
 
