@@ -10,8 +10,9 @@ const Header = () => {
       <a className="nav-link" data-widget="pushmenu" href="#" role="button"><i className="fas fa-bars" /></a>
     </li>
     <li className="nav-item d-none d-sm-inline-block">
-      <Link to="/" className="nav-link">Home</Link>
+      <Link to="/Home" className="nav-link">Home</Link>
     </li>
+  
     <li className="nav-item d-none d-sm-inline-block">
       <a href="#" className="nav-link">Contact</a>
     </li>
