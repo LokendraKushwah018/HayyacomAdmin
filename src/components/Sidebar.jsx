@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
   return (
@@ -29,16 +30,16 @@ const Sidebar = () => {
     <nav className="mt-2">
       <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li className="nav-item ">
-          <a href="#" className="nav-link ">
+          <Link to="/Home" className="nav-link ">
             <i className="nav-icon fas fa-tachometer-alt" />
             <p> Dashboard </p>
-          </a>       
+          </Link>       
         </li>     
         <li className="nav-item">
-          <a  className="nav-link">
+          <Link to='/Users' className="nav-link">
             <i className="nav-icon fas fa-users" />
             <p> Users </p>
-          </a>       
+          </Link>       
         </li>     
         <li className="nav-item">
           <a  className="nav-link">
