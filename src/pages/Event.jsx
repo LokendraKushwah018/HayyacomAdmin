@@ -116,10 +116,9 @@ const Event = () => {
 
     const submitAPI = await axios.put(`${BASE_URL}/edit-event`,updateSubmit)
       console.log(submitAPI)
-      .catch((error) => {
-        console.log(error);
-      })
       getEvent();
+      
+     
   }
 
     useEffect(()=> {
@@ -188,7 +187,10 @@ const Event = () => {
                       console.log(res);
                       getEvent();
 
-                  }}/></td>
+                  }}/>
+                  
+                 
+                  </td>
                 </tr>             
               </tbody>
             )
@@ -246,10 +248,10 @@ const Event = () => {
             <label for="recipient-name" class="col-form-label" >Notes</label>
             <input type="text" class="form-control" value={createData.notes} onChange={display} name='notes' />
           </div>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label" >Partyhall ID</label>
+          {/* <div class="mb-3">
+            <label for="recipient-name" class="col-form-label" >Paper Attendence</label>
             <input type="text" class="form-control"  value={createData.hallID} onChange={display} name='hallID'/>
-          </div>
+          </div> */}
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label" >Phone Number</label>
             <input type="text" class="form-control" value={createData.number} onChange={display} name='number' />
@@ -280,7 +282,7 @@ const Event = () => {
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Date</label>
-            <input type="date" class="form-control" name='number' value={DATE} onChange={(e) => setDATE(e.target.value)}/>
+            <input type="date" class="form-control" name='date' value={DATE} onChange={(e) => setDATE(e.target.value)}/>
           </div> 
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Title</label>
@@ -309,10 +311,10 @@ const Event = () => {
             <label for="recipient-name" class="col-form-label">Contact No.</label>
             <input type="text" class="form-control" value={NUMBER} name='number' onChange={(e) => setNUMBER(e.target.value)} />
           </div>
-          <div class="mb-3">
+          {/* <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Paper Attendence</label>
             <input type="text" class="form-control" value={HALLID} name="" onChange={(e) => setHALLID(e.target.value)}  />
-          </div>
+          </div> */}
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Total Receptionist</label>
             <input type="text" class="form-control" name='trecept' value={TRECEPT} onChange={(e)=> setTRECEPT(e.target.value)} />

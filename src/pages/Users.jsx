@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Container from '../components/Container'
 import axios from 'axios'
 import { BASE_URL } from '../API/config'
-import { Modal  } from 'antd';
+import { Modal ,Button } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
  const [user,setUser] = useState([])
@@ -17,6 +18,9 @@ const Users = () => {
  const [Password,setPassword] = useState('')
  const [Number,setNumber] = useState('')
  const [ID,setId] = useState('')
+
+ const [isModalVisible, setIsModalVisible] = useState(false);
+ const navigate = useNavigate();
 
  const UserAddSchema = Yup.object().shape({
   name: Yup.string()   
@@ -130,6 +134,15 @@ const userDeletetoast = () => {
     table()
       }
 
+
+     const viewDetails = (param) => {
+      console.log(param)     
+      // navigate('/viewDetails')
+      navigate(`/Users/${param}`)
+
+      }
+
+
       useEffect(()=>{
         table()
        
@@ -199,7 +212,7 @@ const userDeletetoast = () => {
                   </td>
                   {/* <td>{data.device_type}</td> */}
                   <td onClick={() => getUpdateData(data.id)}><i type="button" class="fas fa-edit ml-2"  onClick={showModal}/>
-                  <i type="button" class="fas fa-trash ml-3" onClick={async() =>
+                  <i type="button" /* onClick={() => { setIsModalVisible(true); }}  */  class="fas fa-trash ml-3" onClick={async() =>
                   {let res = await axios.delete(`${BASE_URL}delete-user`,{data:{
                     id:data.id}}
                      )               
@@ -209,13 +222,44 @@ const userDeletetoast = () => {
                      }
                      table()
                       }                        
-                           }  /></td>
+                           }  />
+                       <button className='btn ml-4 text-white' onClick={()=> viewDetails(data.id)} style={{backgroundColor: '#6F0A12',border: 'nil'}}> View Event</button>                          
+                           </td>
+                     
                 </tr>                     
               </tbody>
             )            
           })}      
         </table>
+
         
+     
+        {/* Delete Model Start
+        
+        <div style={{
+      display: 'block', width: 700, padding: 30
+    }}>
+      <>
+        <Modal title="Modal Title"
+        footer={null}
+          visible={isModalVisible}
+          onOk={() => {
+            setIsModalVisible(false);
+          }}
+          onCancel={() => {
+            setIsModalVisible(false);
+          }}>
+          <p>Sample Modal contents</p>
+          <button >Confirm</button>
+        </Modal>
+      </>
+    </div> 
+
+    Delete Model End */}
+
+
+
+
 
 {/* Add User Start */}
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

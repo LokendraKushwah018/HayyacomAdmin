@@ -1,7 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const Navigate = useNavigate()
+
+  const logout = () => {
+    Navigate('/')
+  }
   return (
   
     <nav className="main-header navbar navbar-expand navbar-white navbar-light">
@@ -63,7 +68,8 @@ const Header = () => {
           <span className="float-right text-muted text-sm">View Profile</span>
         </a> */}
         <div className="dropdown-divider" />
-        <a href="#" className="dropdown-item "><h6 >
+        <a href="#" className="dropdown-item " onClick={logout}>
+          <h6 >
           <i className="fas fa-sign-out-alt mr-4" />LogOut</h6> 
           {/* <span className="float-right text-muted text-sm">2 days</span> */}
         </a>
