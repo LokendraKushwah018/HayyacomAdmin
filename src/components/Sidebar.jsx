@@ -49,10 +49,10 @@ const Sidebar = () => {
         </li>
    
         <li className="nav-item">
-          <a  className="nav-link">
+          <Link to='/Receptionist' className="nav-link">
             <i className="nav-icon fas fa-table" />
             <p>Receptionists </p>
-          </a>       
+          </Link>       
         </li>        
         {/* <li className="nav-item">
           <a  className="nav-link">

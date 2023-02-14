@@ -75,7 +75,7 @@ const Adminlogin = () => {
                   // same shape as initial values
                   console.log(values.number);
                   axios({
-                    url: `${BASE_URL}/Admin/Login`,
+                    url: `${BASE_URL}/Login`,
                     method: 'POST',
                     data: {
                       phoneNumber: values.number,

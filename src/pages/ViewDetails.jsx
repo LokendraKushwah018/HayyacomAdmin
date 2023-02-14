@@ -10,7 +10,7 @@ const ViewDetails = () => {
   const [edit, setEdit] = useState([])
   const [Id,setId] = useState([]) 
    const [allowed,setAllowed] = useState('')
-  // const [data,setData] = useState({id: '' , allow: ''})
+   const [data,setData] = useState({userid: '' , eventID: '', Guest: ''})
     const [get,setGet] = useState([])
    const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -75,9 +75,19 @@ const notAssign = async() => {
    })
 }
 
+const display = (e) => {
+  setData({...data,[e.target.value]: e.target.name})
+}
+
 const AddEvent = async() => {
   await axios({
     url: `${BASE_URL}/add-new-event-in-user`,
+    method: 'POST',
+    data:{
+      userId: data.userid,
+      eventId: data.eventID,
+      totalGuestAllowed: data.Guest
+    }
     
   })
 

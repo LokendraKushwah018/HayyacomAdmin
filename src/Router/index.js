@@ -6,6 +6,7 @@ import Users from '../pages/Users'
 import Event from '../pages/Event'
 import ViewDetails from '../pages/ViewDetails'
 import Invitation from '../Gold Package/pages/Invitation'
+import Receptionist from '../pages/Receptionist/Receptionist'
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
         <Route path='/Users' element={<Users />}/>
         <Route path='/Event' element={<Event />}/>
         <Route path='/:ViewDetails' element={<ViewDetails />}/>
+        <Route path='/Receptionist' element={<Receptionist />} />
       </Routes>
     </div>
   )
