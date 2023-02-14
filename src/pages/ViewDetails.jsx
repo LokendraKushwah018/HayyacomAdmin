@@ -7,7 +7,7 @@ import Container from '../components/Container'
 const ViewDetails = () => {
   const [edit, setEdit] = useState([])
   // const [UniqueId,setUniqueId] = useState('') 
-  // const [allowed,setAllowed] = useState('')
+   const [allowed,setAllowed] = useState('')
   // const [data,setData] = useState({id: '' , allow: ''})
    const [get,setGet] = useState([])
 
@@ -30,15 +30,20 @@ const ViewDetails = () => {
      })
   }
 
-const geteventUpdate = async(id) => {
+const geteventUpdate = async(UniqueId,e) => {
+  //  e.preventDefault()
   await axios({
-    url: `${BASE_URL}/get-user-event/${id}`,
+    url: `${BASE_URL}/get-user-event/${UniqueId}`,
     method: 'GET',
     
   }).then((response) => {
-    console.log(response.data/* .userEventData */);
+    console.log(response.data);
+      /* .userEventData */
     // const article = response.data.userEventData
     //     setGet(article.totalGuestAllowed)
+    //  const getEvent = response.data.userEventData
+    //   setAllowed(getEvent.totalGuestAllowed)
+    //   setGet(getEvent.id)
   }).catch((error) => {
     console.log(error);
   })
@@ -144,10 +149,13 @@ const geteventUpdate = async(id) => {
       </div>
       <div class="mb-3 m-2">
             <label for="recipient-name" class="col-form-label">Total Guest</label>
-            <input type="number" class="form-control"  name='number'/>
+            <input type="number" class="form-control"  name='number'   />
           </div>
         
-        
+          <div class="mb-3 m-2">
+            <label for="recipient-name" class="col-form-label">Total Guest</label>
+            <input type="number" class="form-control"  name='number'   />
+          </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
