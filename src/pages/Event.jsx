@@ -5,6 +5,7 @@ import { BASE_URL } from '../API/config'
 import Container from '../components/Container'
 import { Modal  } from 'antd';
 import { Link } from 'react-router-dom'
+import {Helmet} from 'react-helmet'
 
 const Event = () => {
     const [get,SetGet] = useState([])
@@ -127,6 +128,11 @@ const Event = () => {
 
   return (
     <Container>
+      <Helmet>
+
+<meta charSet="utf-8" />
+<title>Event</title>
+</Helmet>
           <div className='content-wrapper'>
     <section class="content-header">
       <div class="container-fluid">
@@ -177,7 +183,7 @@ const Event = () => {
                   <td>{event.packagetype}</td>
                   <td>{event.eventContact}</td>
                   <td ><span className='ml-5'>{event.paperAttendence}</span></td>
-                  <td><Link to={event.locationurl}/></td>
+                  <td> {event.locationurl}</td>
                   <td>{event.type}</td>
                   <td onClick={()=> getupdateuserEvents(event.id)}><i type="button" class="fas fa-edit ml-3"  onClick={showModal}/>
                   <i type="button" class="fas fa-trash ml-3"  onClick={ async()=> {

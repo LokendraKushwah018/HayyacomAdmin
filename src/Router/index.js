@@ -5,16 +5,18 @@ import Adminlogin from '../Auth/Adminlogin'
 import Users from '../pages/Users'
 import Event from '../pages/Event'
 import ViewDetails from '../pages/ViewDetails'
+import Invitation from '../Gold Package/pages/Invitation'
 
 const Index = () => {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Adminlogin />}/>
-        <Route path='/Home' element={<Home />}/>
+      <Route path='/invitation/:id/:lang' element={<Invitation />}/>
+        <Route path='/Admin' element={<Adminlogin />}/>
+        <Route path='/Dashboard' element={<Home />}/>
         <Route path='/Users' element={<Users />}/>
         <Route path='/Event' element={<Event />}/>
-        <Route path='/Users/:ViewDetails' element={<ViewDetails />}/>
+        <Route path='/:ViewDetails' element={<ViewDetails />}/>
       </Routes>
     </div>
   )

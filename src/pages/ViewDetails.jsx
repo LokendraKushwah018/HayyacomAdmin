@@ -3,13 +3,25 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { BASE_URL } from '../API/config'
 import Container from '../components/Container'
+import { Modal ,Button, Select } from 'antd';
+import {Helmet} from "react-helmet"
 
 const ViewDetails = () => {
   const [edit, setEdit] = useState([])
-  // const [UniqueId,setUniqueId] = useState('') 
+  const [Id,setId] = useState([]) 
    const [allowed,setAllowed] = useState('')
   // const [data,setData] = useState({id: '' , allow: ''})
-   const [get,setGet] = useState([])
+    const [get,setGet] = useState([])
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+   const showModal = () => {
+    setIsModalOpen(true);
+  };
+ 
+ 
+ const handleCancel = () => {
+   setIsModalOpen(false);
+ };
 
   const view = useParams();
 
@@ -38,24 +50,67 @@ const geteventUpdate = async(UniqueId,e) => {
     
   }).then((response) => {
     console.log(response.data);
-      /* .userEventData */
-    // const article = response.data.userEventData
-    //     setGet(article.totalGuestAllowed)
-    //  const getEvent = response.data.userEventData
-    //   setAllowed(getEvent.totalGuestAllowed)
-    //   setGet(getEvent.id)
+      
+      const getEvent = response.data.userEventData
+      setAllowed(getEvent.totalGuestAllowed)      
+      setGet(getEvent.id)
   }).catch((error) => {
     console.log(error);
   })
 }
 
 
+const notAssign = async() => {
+   await axios({
+    url: `${BASE_URL}/not-assign-event/1`,
+    method: 'GET'
+   }).then((response)=> {
+    console.log(response.data.Events)
+    setId(response.data.Events)
+    console.log(response);
+  //  console.log(Id);
+
+   }).catch((error) => {
+    console.log(error);
+   })
+}
+
+const AddEvent = async() => {
+  await axios({
+    url: `${BASE_URL}/add-new-event-in-user`,
+    
+  })
+
+}
+
+
+const eventUpdate = async (e) => {
+  e.preventDefault();
+  const data = {
+    UniqueId: get,
+    totalGuestAllowed: allowed
+  }
+  await axios.put(`${BASE_URL}edit-user-event`, data)
+    .then((res) => {
+      console.log(res);
+     
+      viewUser();
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   useEffect(() => {
     viewUser()
+
   },[])
   return (
     <Container>
+      <Helmet>
+
+<meta charSet="utf-8" />
+<title>Event Details</title>
+</Helmet>
 <div className='content-wrapper'>
     <section class="content-header">
       <div class="container-fluid">
@@ -66,8 +121,8 @@ const geteventUpdate = async(UniqueId,e) => {
    
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right mr-5"> 
-            <p type="button" >          
-              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}} >Add Event
+            <p type="button" onClick={notAssign}>          
+              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}}  onClick={showModal}>Add Event
                <i className='fas fa-plus'/></button></p>
             </ol>
           </div>
@@ -120,7 +175,7 @@ const geteventUpdate = async(UniqueId,e) => {
                   <td>{data.totalGuestAllowed}</td>
                   <td>{data.total_receptionist}</td>
                   <td>{data.type}</td>                
-                  <td ><i type="button" class="fas fa-edit ml-2" data-toggle="modal" data-target="#exampleModal"  onClick={geteventUpdate(data.UniqueId)}  />
+                  <td ><i type="button" class="fas fa-edit ml-2" data-toggle="modal" data-target="#exampleModal"  onClick={()=> geteventUpdate(data.UniqueId)}  />
                   <i type="button" class="fas fa-trash ml-3"  onClick={ async()=> {
                      let res = await axios.delete(`${BASE_URL}/delete-user-event`,{data:{
                       UniqueId:data.UniqueId
@@ -136,10 +191,10 @@ const geteventUpdate = async(UniqueId,e) => {
             )            
           })}      
         </table>
-       {/* Add Event Model Start */}
+       {/* Update Event Model Start */}
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-  <form /* onSubmit={eventUpdate} */>
+  <form   >
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -149,22 +204,51 @@ const geteventUpdate = async(UniqueId,e) => {
       </div>
       <div class="mb-3 m-2">
             <label for="recipient-name" class="col-form-label">Total Guest</label>
-            <input type="number" class="form-control"  name='number'   />
+            <input type="number" class="form-control"  name='number' value={allowed}  onChange={(e)=> setAllowed(e.target.value)}/>
           </div>
         
-          <div class="mb-3 m-2">
-            <label for="recipient-name" class="col-form-label">Total Guest</label>
-            <input type="number" class="form-control"  name='number'   />
-          </div>
+        
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" onClick={eventUpdate}> Update Event</button>
       </div>
     </div>
     </form>
   </div>
 </div>
-       {/* Add Event Model End */}
+       {/* Update Event Model End */}
+
+
+       {/* Update user Data Start */}
+
+<Modal title="Add Event" open={isModalOpen} onCancel={handleCancel} footer={null}>
+<form /* onSubmit={UpdateData} */>
+          {/* <div class="mb-3">
+            <label for="recipient-name" class="col-form-label" >User ID:</label>
+            <input type="text" class="form-control"  />
+          </div> */}
+          <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Event ID : </label><br/>
+         
+          <select class="col-form-label"  name='ptype' >
+            <option disabled>Choose ID : </option>
+               {Id.map((udata,index) => {
+            return(    
+    <option value={udata.id}>{udata.id}</option>              
+            )
+          })} </select>
+        </div> 
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Total Attendence</label>
+            <input type="number" class="form-control" />
+          </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCancel}>Close</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"  onClick={handleCancel}>Update</button>
+      </div>
+        </form>
+        </Modal>
+              {/* Update user Data End */}
 
   </div>
   </div>

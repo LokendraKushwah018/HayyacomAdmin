@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import {Helmet} from 'react-helmet'
 
 const Users = () => {
  const [user,setUser] = useState([])
@@ -138,7 +139,7 @@ const userDeletetoast = () => {
      const viewDetails = (param) => {
       console.log(param)     
       // navigate('/viewDetails')
-      navigate(`/Users/${param}`)
+      navigate(`/${param}`)
 
       }
 
@@ -150,6 +151,11 @@ const userDeletetoast = () => {
 
   return (
     <Container>
+      <Helmet>
+
+<meta charSet="utf-8" />
+<title>Users</title>
+</Helmet>
        <ToastContainer
         autoClose={2000}
         position="top-center"

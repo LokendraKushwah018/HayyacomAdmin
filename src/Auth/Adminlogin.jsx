@@ -5,6 +5,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { BASE_URL } from '../API/config';
+import {Helmet} from "react-helmet"
 
 
 const Adminlogin = () => {
@@ -40,6 +42,11 @@ const Adminlogin = () => {
 
   return (
     <>
+    <Helmet>
+
+    <meta charSet="utf-8" />
+    <title>Admin Login</title>
+    </Helmet>
       <ToastContainer
         autoClose={2000}
         position="top-center"
@@ -68,7 +75,7 @@ const Adminlogin = () => {
                   // same shape as initial values
                   console.log(values.number);
                   axios({
-                    url: 'https://app.hayyacom.net:3009/Admin/Login',
+                    url: `${BASE_URL}/Admin/Login`,
                     method: 'POST',
                     data: {
                       phoneNumber: values.number,
@@ -79,7 +86,7 @@ const Adminlogin = () => {
                     adminlogintoast();
                     console.log(Response)
                     setTimeout(() => {
-                      navigate('/Home')
+                      navigate('/Dashboard')
                     }, 2000)
                   }).catch((error) => {
                     console.log(error)

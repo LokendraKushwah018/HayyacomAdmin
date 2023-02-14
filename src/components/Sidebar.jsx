@@ -30,7 +30,7 @@ const Sidebar = () => {
     <nav className="mt-2">
       <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li className="nav-item ">
-          <Link to="/Home" className="nav-link ">
+          <Link to="/Dashboard" className="nav-link ">
             <i className="nav-icon fas fa-tachometer-alt" />
             <p> Dashboard </p>
           </Link>       

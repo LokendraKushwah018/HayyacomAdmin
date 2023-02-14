@@ -1,9 +1,15 @@
 import React from 'react'
 import Container from '../components/Container'
-
+import {Helmet} from 'react-helmet'
 const Home = () => {
   return (
+    
     <Container>
+      <Helmet>
+
+<meta charSet="utf-8" />
+<title>Dashboard</title>
+</Helmet>
 <div className="content-wrapper">
   {/* Content Header (Page header) */}
   <div className="content-header">

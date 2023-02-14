@@ -18,3 +18,124 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
+
+
+.newStyle .ant-modal-header,
+
+.newStyle .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px 0px;
+}
+.newStyle .ant-modal-content p {
+  padding: 0px;
+  text-align: center;
+  margin: 0px;
+  font-size: 18px;
+
+}
+
+.newStylemodeltwo .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px 0px;
+  margin-right: 0px;
+
+}
+
+.newStylemodeltwo .ant-modal-content div {
+  text-align: center;
+  font-size: 15px;
+}
+
+.newStylemodeltwo .ant-modal-content select {
+  border: none;
+  outline: none;
+  background-color: white;
+}
+
+
+.qrcodeModal .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+@media only screen and (max-width: 480px) {
+  .ant-modal {
+    max-width: calc(100vw - 0px);
+
+  }
+
+  .qrcodeModal .ant-modal-content {
+    border-radius: 0px;
+    padding: 0px;
+    width: 100vw;
+  }
+}
+
+
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  outline: none;
+  width: 50px;
+}
+
+.dropbtn {
+  color: black;
+  cursor: pointer;
+  transition: 0.35s ease-out;
+  width: 30px;
+}
+
+.dropdown .dropdown-content {
+  position: absolute;
+  top: 0%;
+  margin: 0px 0px 0px -5px;
+  border-radius: 3px;
+  background-color: #f7f7f7;
+  min-width: 45px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 100000;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.35s ease-out;
+}
+
+.small {
+  color: black;
+  padding: 0px 7px;
+  display: block;
+  transition: 0.35s ease-out;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+}
+
+.total_guest {
+  display: inline;
+}
+
+.small:hover {
+  background-color: #eaeaea;
+}
+
+.removesmall {
+  display: none;
+}
+
+.dropdown:focus .dropdown-content {
+  outline: none;
+  transform: translateY(20px);
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+

@@ -5,7 +5,7 @@ const Header = () => {
   const Navigate = useNavigate()
 
   const logout = () => {
-    Navigate('/')
+    Navigate('/Admin')
   }
   return (
   
