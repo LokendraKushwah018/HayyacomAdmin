@@ -13,6 +13,7 @@ const ViewDetails = () => {
    const [data,setData] = useState({userid: '' , eventID: '', Guest: ''})
     const [get,setGet] = useState([])
    const [isModalOpen, setIsModalOpen] = useState(false);
+   const [eventID,setEventID] = useState('')
 
    const showModal = () => {
     setIsModalOpen(true);
@@ -34,6 +35,8 @@ const ViewDetails = () => {
      }).then((response) => {
       console.log(response.data.Events);
       setEdit(response.data.Events)
+      setEventID(response.data.Events[1].UserId)
+      console.log(eventID)
       // setUniqueId(response.data.Events.UniqueId)
 
 
@@ -62,7 +65,7 @@ const geteventUpdate = async(UniqueId,e) => {
 
 const notAssign = async() => {
    await axios({
-    url: `${BASE_URL}/not-assign-event/1`,
+    url: `${BASE_URL}not-assign-event/${views}`,
     method: 'GET'
    }).then((response)=> {
     console.log(response.data.Events)
@@ -76,19 +79,25 @@ const notAssign = async() => {
 }
 
 const display = (e) => {
-  setData({...data,[e.target.value]: e.target.name})
+  setData({...data,[e.target.name]: e.target.value})
 }
 
-const AddEvent = async() => {
+const AddEvent = async(e) => {
+  e.preventDefault()
   await axios({
-    url: `${BASE_URL}/add-new-event-in-user`,
+    url: `${BASE_URL}add-new-event-in-user`,
     method: 'POST',
     data:{
-      userId: data.userid,
+      userId: views,
       eventId: data.eventID,
       totalGuestAllowed: data.Guest
     }
     
+  }).then((response) => {
+    console.log(response);
+    viewUser()
+  }).catch((error) => {
+   console.log(error);
   })
 
 }
@@ -117,7 +126,6 @@ const eventUpdate = async (e) => {
   return (
     <Container>
       <Helmet>
-
 <meta charSet="utf-8" />
 <title>Event Details</title>
 </Helmet>
@@ -126,8 +134,8 @@ const eventUpdate = async (e) => {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>View User Events</h3>
-          </div>    
+            <h3 style={{color: '#6F0A12'}}>View User Events</h3>
+          </div>                        
    
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right mr-5"> 
@@ -207,7 +215,7 @@ const eventUpdate = async (e) => {
   <form   >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Update Event</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -215,9 +223,7 @@ const eventUpdate = async (e) => {
       <div class="mb-3 m-2">
             <label for="recipient-name" class="col-form-label">Total Guest</label>
             <input type="number" class="form-control"  name='number' value={allowed}  onChange={(e)=> setAllowed(e.target.value)}/>
-          </div>
-        
-        
+          </div>        
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary" data-dismiss="modal" onClick={eventUpdate}> Update Event</button>
@@ -229,28 +235,27 @@ const eventUpdate = async (e) => {
        {/* Update Event Model End */}
 
 
-       {/* Update user Data Start */}
+       {/* Add user Data Start */}
 
 <Modal title="Add Event" open={isModalOpen} onCancel={handleCancel} footer={null}>
-<form /* onSubmit={UpdateData} */>
-          {/* <div class="mb-3">
-            <label for="recipient-name" class="col-form-label" >User ID:</label>
-            <input type="text" class="form-control"  />
-          </div> */}
+<form onSubmit={AddEvent} >
           <div class="mb-3">
-          <label for="recipient-name" class="col-form-label">Event ID : </label><br/>
-         
-          <select class="col-form-label"  name='ptype' >
-            <option disabled>Choose ID : </option>
+            <label for="recipient-name" class="col-form-label"  >User ID:</label>
+            <input type="text" class="form-control" value={views} onChange={display} /* name='userid' */ />
+          </div>
+          <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Event ID : </label><br/>         
+          <select class="col-form-label"  name='eventID' onChange={display} value={data.eventID}>
+            <option >Choose Event ID : </option>
                {Id.map((udata,index) => {
             return(    
-    <option value={udata.id}>{udata.id}</option>              
+    <option value={udata.id} >{udata.id}</option>              
             )
           })} </select>
         </div> 
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Total Attendence</label>
-            <input type="number" class="form-control" />
+            <label for="recipient-name" class="col-form-label" >Total Attendence</label>
+            <input type="number" class="form-control" value={data.Guest} onChange={display} name='Guest'/>
           </div>
           <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCancel}>Close</button>
@@ -258,7 +263,7 @@ const eventUpdate = async (e) => {
       </div>
         </form>
         </Modal>
-              {/* Update user Data End */}
+              {/* Add user Data End */}
 
   </div>
   </div>

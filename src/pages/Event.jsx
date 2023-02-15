@@ -138,7 +138,7 @@ const Event = () => {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>User Event </h3>
+            <h3 style={{color: '#6F0A12'}}>User Event </h3>
           </div>  
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right mr-5"> 
@@ -156,7 +156,7 @@ const Event = () => {
     <div className="card">    
       <div className="card-body table-responsive p-0">
         <table className="table table-hover text-nowrap">
-          <thead className="bg-dark text-white">
+          <thead >
             <tr>
               <th>S.No</th>
               <th>Event ID</th>

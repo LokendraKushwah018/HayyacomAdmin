@@ -1,7 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from '../components/Container'
 import {Helmet} from 'react-helmet'
+import axios from 'axios'
+import { BASE_URL } from '../API/config'
+import { Link } from 'react-router-dom'
+
 const Home = () => {
+   const[ data, setData] = useState('')
+ 
+  const Dashboard = async() => {
+    await axios({
+      url: `${BASE_URL}/dashboard`,
+      method: 'GET',
+
+    }).then((response) => {
+      console.log(response.data);
+      setData(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  } 
+
+  useEffect(() => {
+    Dashboard();
+  },[])
+
   return (
     
     <Container>
@@ -30,53 +53,48 @@ const Home = () => {
   {/* /.content-header */}
   {/* Main content */}
   <section className="content">
-    <div className="container-fluid">
-      {/* Small boxes (Stat box) */}
+    <div className="container-fluid">    
       <div className="row">
-        <div className="col-lg-3 col-6">
-          {/* small box */}
-          <div className="small-box bg-info">
-            <div className="inner">
-              <h3>150</h3>
-              <p>New Orders</p>
-            </div>
-            <div className="icon">
-              <i className="ion ion-bag" />
-            </div>
-            <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-          </div>
-        </div>
-        {/* ./col */}
-        <div className="col-lg-3 col-6">
-          {/* small box */}
-          <div className="small-box bg-success">
-            <div className="inner">
-              <h3>53<sup style={{fontSize: 20}}>%</sup></h3>
-              <p>Bounce Rate</p>
-            </div>
-            <div className="icon">
-              <i className="ion ion-stats-bars" />
-            </div>
-            <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-          </div>
-        </div>
-        {/* ./col */}
-        <div className="col-lg-3 col-6">
-          {/* small box */}
+      <div className="col-lg-4 col-6">         
           <div className="small-box bg-warning">
             <div className="inner">
-              <h3>44</h3>
-              <p>User Registrations</p>
+              <h3>{data.TotalUser}</h3>
+              <p>Total User</p>
             </div>
             <div className="icon">
               <i className="ion ion-person-add" />
             </div>
-            <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+            <Link to="/Users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
           </div>
         </div>
-        {/* ./col */}
-        <div className="col-lg-3 col-6">
-          {/* small box */}
+        <div className="col-lg-4 col-6">        
+          <div className="small-box bg-success">
+            <div className="inner">
+              <h3>{data.TotalEvent}</h3>
+              <p>Total Events</p>
+            </div>
+            <div className="icon">
+              <i className="ion ion-bag" />
+            </div>
+            <Link to="/Event" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+          </div>
+        </div>        
+        <div className="col-lg-4 col-6">          
+          <div className="small-box bg-danger">
+            <div className="inner">
+              <h3>{data.TotalReceptionist}</h3>
+              <p>Total Receptionist</p>
+            </div>
+            <div className="icon">
+              <i className="ion ion-stats-bars" />
+            </div>
+            <Link to="/Receptionist" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+          </div>
+        </div>      
+       
+      
+        {/* <div className="col-lg-3 col-6">
+         
           <div className="small-box bg-danger">
             <div className="inner">
               <h3>65</h3>
@@ -87,7 +105,7 @@ const Home = () => {
             </div>
             <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
           </div>
-        </div>
+        </div> */}
         {/* ./col */}
       </div>
       {/* /.row */}

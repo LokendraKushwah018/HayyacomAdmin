@@ -64,7 +64,8 @@ const userDeletetoast = () => {
             method: "GET"
         }).then((Response)=> {
             console.log(Response.data.Data)            
-            setUser(Response.data.Data)         
+            setUser(Response.data.Data) 
+            console.log(Response.data.Data.EventFind)        
         }).catch((error)=> {
             console.log(error)
         })
@@ -143,6 +144,10 @@ const userDeletetoast = () => {
 
       }
 
+      const AddEvent = (id) => {
+        navigate(`/AddEvent/${id}`)
+      }
+
 
       useEffect(()=>{
         table()
@@ -173,7 +178,7 @@ const userDeletetoast = () => {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>Users Data</h3>
+            <h3 style={{color: '#6F0A12'}}>Users Data</h3>
           </div>    
    
           <div class="col-sm-6">
@@ -229,7 +234,13 @@ const userDeletetoast = () => {
                      table()
                       }                        
                            }  />
-                       <button className='btn ml-4 text-white' onClick={()=> viewDetails(data.id)} style={{backgroundColor: '#6F0A12',border: 'nil'}}> View Event</button>                          
+
+                           {data.EventFind === true ? 
+                       <button className='btn ml-4 text-white' onClick={()=> viewDetails(data.id)} style={{backgroundColor: '#6F0A12'}}> View Event</button>  :
+                       <button className='btn ml-4 text-white' style={{backgroundColor: '#6F0A12'}}
+                       /* onClick={()=> viewDetails(data.id)}     */                   
+                        onClick={()=>AddEvent(data.id)}>Add Event</button>
+                          }                        
                            </td>
                      
                 </tr>                     
