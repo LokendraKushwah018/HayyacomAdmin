@@ -6,6 +6,8 @@ import Container from '../components/Container'
 import { Modal  } from 'antd';
 import { Link } from 'react-router-dom'
 import {Helmet} from 'react-helmet'
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 const Event = () => {
     const [get,SetGet] = useState([])
@@ -21,6 +23,18 @@ const Event = () => {
     const [HALLID, setHALLID] = useState('')
     const [NUMBER, setNUMBER] = useState('')
     const [TRECEPT, setTRECEPT] = useState('')
+    const [isModalOpenadd, setIsModalOpenadd] = useState(false);
+
+
+    const showModaladd = () => {
+      setIsModalOpenadd(true);
+    };
+  
+    const handleCanceladd = () => {
+      setIsModalOpenadd(false);
+    };
+
+
     const showModal = () => { 
       setIsModalOpen(true);
     };   
@@ -28,6 +42,36 @@ const Event = () => {
    const handleCancel = () => {
      setIsModalOpen(false);
    };
+
+
+   const UserAddSchema = Yup.object().shape({
+    id: Yup.string()
+      .required('Please enter id'),
+    locationurl: Yup.string()
+      .required('Please enter location url'),
+    type: Yup.string()
+      .required('Please enter type'),
+    packagetype: Yup.string()
+      .required('Please enter package type'),
+    eventDate: Yup.string()
+      .required('Please enter date'),
+    eventtitle: Yup.string()
+      .required('Please enter title'),
+    notes: Yup.string()
+      .required('Please enter notes'),
+    // partyhallId: Yup.string()
+    //   .required('Please enter partyhallId'),
+    total_receptionist: Yup.string()
+  
+      .required('Please enter total receptionist'),
+    eventContact: Yup.string()
+      .required('Please enter event Contact'),
+      partyhallId: Yup.string()
+      .required('Please enter party hall id'),
+    // email: Yup.string().email('Invalid email').required('Required'),
+  });
+
+
 
     const getEvent = async() => {
        await axios({
@@ -142,8 +186,8 @@ const Event = () => {
           </div>  
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right mr-5"> 
-            <p type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">          
-              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}}>Add Event  <i className='fas fa-plus'/></button></p>
+            <p type="button"  /* data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" */>          
+              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}} onClick={showModaladd}>Add Event  <i className='fas fa-plus'/></button></p>
             </ol>
           </div>  
         </div>
@@ -206,8 +250,150 @@ const Event = () => {
 
         {/* Add user Event Model Start*/}
 
+        <Modal title=" Add Event" open={isModalOpenadd} onCancel={handleCanceladd} footer={false}>
+                    
+                      <Formik
+                        initialValues={{
+                          id: '',
+                          locationurl: '',
+                          type: '',
+                          packagetype: '',
+                          eventDate: '',
+                          eventtitle: '',
+                          notes: '',
+                          partyhallId: '',
+                          total_receptionist: '',
+                          eventContact: '',
+                        }}
+                        validationSchema={UserAddSchema}
+                        onSubmit={(values, { resetForm }) => {
+                          console.log(values.number);
+                          console.log(HALLID)
+                          axios({
+                            url: `${BASE_URL}create-event`,
+                            method: 'POST',
+                            data: {
+                              id: values.id,
+                              locationurl: values.locationurl,
+                              type: values.type,
+                              packagetype: values.packagetype,
+                              eventDate: values.eventDate,
+                              eventtitle: values.eventtitle,
+                              notes: values.notes,
+                              partyhallId: values.partyhallId,
+                              total_receptionist: values.total_receptionist,
+                              eventContact: values.eventContact
+                            }
+                          }).then((Response) => {
+                            console.log(Response)
+                            if (Response.data.status === 200) {
+                              // setIsModalOpen(false)
+                              resetForm({ values: '' });
+                              // ReceptionistApi();
+                            }
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          }).catch((error) => {
+                            console.log(error.response.data.message)
+
+                          })
+                        }}
+                      >
+                        {({ values, errors, touched }) => (
+                          <Form noValidate>
+                            <label htmlFor="recipient-name" class="col-form-label" >ID</label>
+                            <div className="input-group mb-3">
+                              <Field name="id" type="number" className="form-control" placeholder="Id" />
+                            </div>
+                            {errors.id && touched.id ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.id}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Location Url</label>
+                            <div className="input-group mb-3">
+                              <Field name="locationurl" className="form-control" placeholder="Location Url" />
+                            </div>
+                            {errors.locationurl && touched.locationurl ? (
+                              <div className="input-group mb-3" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.locationurl}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Type</label>
+                            <div className="input-group mb-3">
+                              <Field name="type" className="form-control" placeholder="type" />
+                            </div>
+                            {errors.type && touched.type ? (
+                              <div className="input-group mb-3" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.type}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label">Package Type</label>
+                            <div className="input-group mb-3">
+                              <Field as="select" name="packagetype">
+                                <option value="Gold">Gold</option>
+                                <option value="Diamond">Diamond</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Discount">Discount</option>
+                              </Field>
+                           
+                            </div>
+                            {errors.packagetype && touched.packagetype ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.packagetype}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Date</label>
+                            <div className="input-group mb-3">
+                              <Field name="eventDate" type='date' className="form-control" placeholder="Date" />
+                              <div className="input-group-append ">
+                              </div>
+                            </div>
+                            {errors.eventDate && touched.eventDate ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.eventDate}</div>
+                            ) : null}
+
+                            <label htmlFor="recipient-name" class="col-form-label" >Title</label>
+                            <div className="input-group mb-3">
+                              <Field name="eventtitle" className="form-control" placeholder="Title" />
+                            </div>
+                            {errors.eventtitle && touched.eventtitle ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.eventtitle}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Notes</label>
+                            <div className="input-group mb-3">
+                              <Field name="notes" className="form-control" placeholder="notes" />
+                            </div>
+                            {errors.notes && touched.notes ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.notes}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Phone Number</label>
+                            <div className="input-group mb-3">
+                              <Field name="eventContact" className="form-control" placeholder="Contact no" />
+                            </div>
+                            {errors.eventContact && touched.eventContact ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.eventContact}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Party Hall Id</label>
+                            <div className="input-group mb-3">
+                              <Field name="partyhallId" className="form-control" placeholder="Party Hall Id" />
+                            </div>
+                            {errors.partyhallId && touched.partyhallId ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.total_receptionist}</div>
+                            ) : null}
+                            <label htmlFor="recipient-name" class="col-form-label" >Total Receptionist</label>
+                            <div className="input-group mb-3">
+                              <Field name="total_receptionist" className="form-control" placeholder="Total Receptionist" />
+                            </div>
+                            {errors.total_receptionist && touched.total_receptionist ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.total_receptionist}</div>
+                            ) : null}
+
+                            <div className="social-auth-links text-center mb-3" >
+                             
+                              <button className='btn btn-primary text-white ml-0' type="submit">Add</button>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    </Modal>
+
+
+
+
+
+        {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -238,10 +424,7 @@ const Event = () => {
     <option value="Discount">Discount</option>
   </select>
   </div>
-          {/* <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Package Type</label>
-            <input type="text" class="form-control" value={createData.ptype} onChange={display} name='ptype'/>
-          </div> */}
+        
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label" > Event Date</label>
             <input type="date" id="Date" class="form-control"  value={createData.date} onChange={display} name='date'/>
@@ -254,10 +437,7 @@ const Event = () => {
             <label for="recipient-name" class="col-form-label" >Notes</label>
             <input type="text" class="form-control" value={createData.notes} onChange={display} name='notes' />
           </div>
-          {/* <div class="mb-3">
-            <label for="recipient-name" class="col-form-label" >Paper Attendence</label>
-            <input type="text" class="form-control"  value={createData.hallID} onChange={display} name='hallID'/>
-          </div> */}
+       
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label" >Phone Number</label>
             <input type="text" class="form-control" value={createData.number} onChange={display} name='number' />
@@ -274,7 +454,7 @@ const Event = () => {
         </div>
         </div>
         </div>
-        </div>
+        </div> */}
 
         {/* Add User Event Model End */}
 

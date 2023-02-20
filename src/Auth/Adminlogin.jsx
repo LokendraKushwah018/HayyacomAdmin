@@ -12,6 +12,7 @@ import {Helmet} from "react-helmet"
 const Adminlogin = () => {
   const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState("password")
+  const [error,setError] = useState('');
 
   const togglePassword = () => {
     if(passwordType === "password"){
@@ -48,7 +49,7 @@ const Adminlogin = () => {
     <title>Admin Login</title>
     </Helmet>
       <ToastContainer
-        autoClose={2000}
+        autoClose={1000}
         position="top-center"
         hideProgressBar
         className="toast-container"
@@ -65,6 +66,8 @@ const Adminlogin = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Admin Login</p>
+              
+              <div className="text-center"  style={{ color: '#9D0305',fontSize:'14px',marginBottom:'10px',marginTop:'-15px' }}>{error}</div>
               <Formik
                 initialValues={{
                   number: '',
@@ -90,7 +93,8 @@ const Adminlogin = () => {
                     }, 2000)
                   }).catch((error) => {
                     console.log(error)
-                    adminlogintoasterror();
+                    // adminlogintoasterror();
+                    setError(error.response.data.message)
                   })
                 }}
               >
@@ -111,7 +115,6 @@ const Adminlogin = () => {
                       <Field name="password" className="form-control" type={passwordType==="password" ? "password" : "text"} placeholder="Password" />
                       <div className="input-group-append">
                         <div className="input-group-text" onMouseDown={togglePassword}>
-                          
                           {passwordType==="password" ? <i className="fas fa-eye-slash" style={{ color: '#6F0A12' }} /> :<i className="fas fa-eye" style={{ color: '#6F0A12' }} />}
                         </div>
                       </div>
@@ -119,8 +122,6 @@ const Adminlogin = () => {
                     {errors.password && touched.password ? (
                       <div className=""  style={{ color: '#9D0305',fontSize:'14px',marginBottom:'10px',marginTop:'-15px' }}>{errors.password}</div>
                     ) : null}
-                   
-                    
                     <div className="social-auth-links text-center mb-3" >
                       <button className='btn btn-block text-white' style={{ backgroundColor: "#6F0A12" }} type="submit">Login</button>
                     </div>

@@ -19,9 +19,23 @@ const Users = () => {
  const [Password,setPassword] = useState('')
  const [Number,setNumber] = useState('')
  const [ID,setId] = useState('')
+ const [isModalOpenadd, setIsModalOpenadd] = useState(false);
 
- const [isModalVisible, setIsModalVisible] = useState(false);
+ 
+
+//  const [isModalVisible, setIsModalVisible] = useState(false);
  const navigate = useNavigate();
+
+ const addModal = () => {
+  setIsModalOpenadd(true);
+};
+
+ const handleOkadd = () => {
+  setIsModalOpenadd(false);
+};
+const handleCanceladd = () => {
+  setIsModalOpenadd(false);
+};
 
  const UserAddSchema = Yup.object().shape({
   name: Yup.string()   
@@ -184,7 +198,7 @@ const userDeletetoast = () => {
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right mr-5"> 
             <p type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">          
-              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}}>Add User   <i className='fas fa-plus'/></button></p>
+              <button className="btn text-white" style={{backgroundColor:"#6F0A12"}} onClick={addModal}>Add User   <i className='fas fa-plus'/></button></p>
             </ol>
           </div>
         </div>
@@ -279,7 +293,7 @@ const userDeletetoast = () => {
 
 
 {/* Add User Start */}
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -354,29 +368,90 @@ const userDeletetoast = () => {
                   </Form>
                 )}
               </Formik>
-        {/* <form onSubmit={Createuser}>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label" >Name:</label>
-            <input type="text" class="form-control" value={data.name} onChange={display} name='name'/>
-          </div>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Phone Number</label>
-            <input type="number" class="form-control" value={data.number} onChange={display} name='number'/>
-          </div> 
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Password</label>
-            <input type="password" class="form-control" value={data.password} onChange={display} name='password'/>
-          </div>
-          <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add</button>
-      </div>
-        </form> */}
+      
 
       </div>     
     </div>
   </div>
-</div>
+</div> */}
+
+
+<Modal title=" Add User" open={isModalOpenadd} onOk={handleOkadd} onCancel={handleCanceladd} footer={false}>
+                      <Formik
+                        initialValues={{
+                          name: '',
+                          number: '',
+                          password: '',
+                        }}
+                        validationSchema={UserAddSchema}
+                        onSubmit={(values, { resetForm }) => {
+                          console.log(values.number);
+                          axios({
+                            url: `${BASE_URL}create-user`,
+                            method: 'POST',
+                            data: {
+                              name: values.name,
+                              phoneNumber: values.number,
+                              password: values.password
+                            }
+
+                          }).then((Response) => {
+                            console.log(Response)
+                            setIsModalOpenadd(false)
+                            table()
+                            if (Response.data.status === 200) {
+                              userAddtoast();
+                              resetForm({ values: '' });
+
+                            }
+
+                          }).catch((error) => {
+                            console.log(error.response.data.message)
+                            toast.error(error.response.data.message)
+
+                          })
+                        }}
+                      >
+                        {({ errors, touched }) => (
+                          <Form noValidate>
+                            <label for="recipient-name" class="col-form-label" >Name</label>
+                            <div className="input-group mb-3">
+                              <Field name="name" type="name" className="form-control" placeholder="Name" />
+
+                            </div>
+                            {errors.name && touched.name ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.name}</div>
+                            ) : null}
+                            <label for="recipient-name" class="col-form-label" >Mobile number</label>
+                            <div className="input-group mb-3">
+                              <Field name="number" type='number' className="form-control" placeholder="Mobile number" />
+                              <div className="input-group-append ">
+
+                              </div>
+                            </div>
+                            {errors.number && touched.number ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.number}</div>
+                            ) : null}
+                            <label for="recipient-name" class="col-form-label" >Password</label>
+                            <div className="input-group mb-3">
+                              <Field name="password" className="form-control" placeholder="Password" />
+                            </div>
+                            {errors.password && touched.password ? (
+                              <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.password}</div>
+                            ) : null}
+
+
+                            <div className="social-auth-links text-center mb-3" >
+                              <button type="button" class="btn btn-secondary" onClick={handleCanceladd} >Close</button>
+                              <button className='btn btn-primary text-white ml-4' type="submit">Add</button>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    </ Modal>
+
+
+
 {/* Add User End */}
 
 
