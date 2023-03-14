@@ -20,7 +20,7 @@ const Users = () => {
  const [Number,setNumber] = useState('')
  const [ID,setId] = useState('')
  const [isModalOpenadd, setIsModalOpenadd] = useState(false);
-
+ const [IsModeldel ,setIsModeldel] = useState(false)
  
 
 //  const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,6 +36,17 @@ const Users = () => {
 const handleCanceladd = () => {
   setIsModalOpenadd(false);
 };
+
+const showModaldelete = () => {
+  setIsModeldel(true);
+ }
+
+ const handleCanceldel = () => {
+  setIsModeldel(false)
+ }
+
+
+
 
  const UserAddSchema = Yup.object().shape({
   name: Yup.string()   
@@ -79,7 +90,7 @@ const userDeletetoast = () => {
         }).then((Response)=> {
             console.log(Response.data.Data)            
             setUser(Response.data.Data) 
-            console.log(Response.data.Data.EventFind)        
+            // console.log(Response.data.Data.EventFind)        
         }).catch((error)=> {
             console.log(error)
         })
@@ -155,13 +166,11 @@ const userDeletetoast = () => {
       console.log(param)     
       // navigate('/viewDetails')
       navigate(`/${param}`)
-
       }
 
       const AddEvent = (id) => {
         navigate(`/AddEvent/${id}`)
       }
-
 
       useEffect(()=>{
         table()
@@ -171,10 +180,9 @@ const userDeletetoast = () => {
   return (
     <Container>
       <Helmet>
-
-<meta charSet="utf-8" />
-<title>Users</title>
-</Helmet>
+       <meta charSet="utf-8" />
+       <title>Users</title>
+      </Helmet>
        <ToastContainer
         autoClose={2000}
         position="top-center"
@@ -183,9 +191,7 @@ const userDeletetoast = () => {
         toastClassName="dark-toast"
         theme="colored"
         toastStyle={{ backgroundColor: '#6F0A12' }}
-      />
-            
-      
+      />      
  
     <div className='content-wrapper'>
     <section class="content-header">
@@ -221,7 +227,7 @@ const userDeletetoast = () => {
               <th>Phone Number</th>
               <th>Password</th>
               <th>Login From</th>
-              <th>Edit/Delete</th>
+              <th>Action</th>
             </tr>
           </thead>
           {user.map((data,index)=>{
@@ -229,68 +235,61 @@ const userDeletetoast = () => {
                 <tbody key={index}>
                 <tr>
                   <td>{index+1}</td>
-                  <td>{data.id}</td>
+                  <td><span className='ml-3'>{data.id}</span></td>
                   <td>{data.name}</td>
                   <td>{data.phoneNumber}</td>
-                  <td>{data.password}</td>
-                  <td>{data.device_type==="android" || data.device_type==="ios" ? data.device_type : "Not Login" }
+                  <td><span className='ml-3'>{data.password}</span></td>
+                  <td><span className='ml-2'>{data.device_type==="android" || data.device_type==="ios" ? data.device_type : "Not Login" }</span>
                   </td>
                   {/* <td>{data.device_type}</td> */}
                   <td onClick={() => getUpdateData(data.id)}><i type="button" class="fas fa-edit ml-2"  onClick={showModal}/>
-                  <i type="button" /* onClick={() => { setIsModalVisible(true); }}  */  class="fas fa-trash ml-3" onClick={async() =>
-                  {let res = await axios.delete(`${BASE_URL}delete-user`,{data:{
-                    id:data.id}}
-                     )               
-                     console.log(res);
-                     if(res.data.status===200){
-                      userDeletetoast()
-                     }
-                     table()
-                      }                        
-                           }  />
-
+                  <i type="button" /* onClick={() => { setIsModalVisible(true); }}  */  
+                  class="fas fa-trash ml-3"  onClick={showModaldelete}
+                  // onClick={async() =>
+                  // {let res = await axios.delete(`${BASE_URL}delete-user`,{data:{
+                  //   id:data.id}}
+                  //    )               
+                  //    console.log(res);
+                  //    if(res.data.status===200){
+                  //     userDeletetoast()
+                  //    }
+                  //    table()
+                  //     }                        
+                  //          }  
+                           />
                            {data.EventFind === true ? 
                        <button className='btn ml-4 text-white' onClick={()=> viewDetails(data.id)} style={{backgroundColor: '#6F0A12'}}> View Event</button>  :
                        <button className='btn ml-4 text-white' style={{backgroundColor: '#6F0A12'}}
                        /* onClick={()=> viewDetails(data.id)}     */                   
                         onClick={()=>AddEvent(data.id)}>Add Event</button>
                           }                        
-                           </td>
-                     
+                           </td>                     
                 </tr>                     
               </tbody>
             )            
           })}      
-        </table>
-
-        
+        </table>        
      
-        {/* Delete Model Start
-        
-        <div style={{
-      display: 'block', width: 700, padding: 30
-    }}>
-      <>
-        <Modal title="Modal Title"
-        footer={null}
-          visible={isModalVisible}
-          onOk={() => {
-            setIsModalVisible(false);
-          }}
-          onCancel={() => {
-            setIsModalVisible(false);
-          }}>
-          <p>Sample Modal contents</p>
-          <button >Confirm</button>
-        </Modal>
-      </>
-    </div> 
+     {/* Delete Model Start */}
+     <Modal title="Delete Confirmation" open={IsModeldel} /* onOk={handleOk} */ onCancel={handleCanceldel} footer={false}>
+        <p>Are you sure you want to delete user event? </p>
+        <button type="info" data-bs-dismiss="modal" className="btn text-white" style={{backgroundColor:"#6F0A12"}}
+             onClick={async() =>
+                  {let res = await axios.delete(`${BASE_URL}delete-user`,{data:{
+                    id:ID}}
+                     )               
+                     console.log(res);
+                     handleCanceldel()
+                     if(res.data.status===200){
+                      userDeletetoast()
+                     }
+                     table()
+                      }                        
+                           } 
+        >Delete</button>
 
-    Delete Model End */}
-
-
-
-
+      </Modal>
+      {/* Delete Model End */} 
 
 {/* Add User Start */}
 {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -413,11 +412,10 @@ const userDeletetoast = () => {
                         }}
                       >
                         {({ errors, touched }) => (
-                          <Form noValidate>
+                          <Form noValidate >
                             <label for="recipient-name" class="col-form-label" >Name</label>
                             <div className="input-group mb-3">
                               <Field name="name" type="name" className="form-control" placeholder="Name" />
-
                             </div>
                             {errors.name && touched.name ? (
                               <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.name}</div>
@@ -426,7 +424,6 @@ const userDeletetoast = () => {
                             <div className="input-group mb-3">
                               <Field name="number" type='number' className="form-control" placeholder="Mobile number" />
                               <div className="input-group-append ">
-
                               </div>
                             </div>
                             {errors.number && touched.number ? (
@@ -439,8 +436,6 @@ const userDeletetoast = () => {
                             {errors.password && touched.password ? (
                               <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.password}</div>
                             ) : null}
-
-
                             <div className="social-auth-links text-center mb-3" >
                               <button type="button" class="btn btn-secondary" onClick={handleCanceladd} >Close</button>
                               <button className='btn btn-primary text-white ml-4' type="submit">Add</button>

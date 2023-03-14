@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 // import '../index.css';
 import '../../index.css'
-
 import { Helmet } from 'react-helmet';
 // import Footer from '../Component/Footer';
 import Goldfooter from '../Component/Goldfooter';
@@ -285,7 +284,7 @@ const Invitation = () => {
                 <Goldfooter lang={lang} footer={footer} />
             </Wrapper>
 
-            {/* {/  select guest modal start /} */}
+            {/* select guest modal start */}
             {isModalOpentwo &&
                 <Modal
                     open={isModalOpentwo}

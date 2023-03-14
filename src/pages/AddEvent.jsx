@@ -79,8 +79,7 @@ const AddEvent = () => {
                 <div className="mb-3">
                   <label for="recipient-name" className="col-form-label" >User ID :</label>
                   <input type="text" className="form-control" value={views} /* onChange={display} */  name='views' />
-                </div>
-           
+                </div>           
                
                 <div class="mb-3">
           <label for="recipient-name" class="col-form-label">Event ID : </label><br/>         

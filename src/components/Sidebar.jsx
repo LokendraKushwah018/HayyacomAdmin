@@ -2,6 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
+
+var width = window.innerWidth
+
+if(width<=500){
+  
+}
+   
   return (
 <aside className="main-sidebar sidebar-dark-primary elevation-4">
   <a  className="brand-link">
@@ -30,26 +37,26 @@ const Sidebar = () => {
     <nav className="mt-2">
       <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li className="nav-item ">
-          <Link to="/Dashboard" className="nav-link ">
+          <Link to="/Dashboard" className="nav-link " /* data-widget="pushmenu" */ >
             <i className="nav-icon fas fa-tachometer-alt" />
             <p> Dashboard </p>
           </Link>       
         </li>     
         <li className="nav-item">
-          <Link to='/Users' className="nav-link">
+          <Link to='/Users' className="nav-link" /* data-widget="pushmenu" */ >
             <i className="nav-icon fas fa-users" />
             <p> Users </p>
           </Link>       
         </li>     
         <li className="nav-item">
-          <Link to='/Event' className="nav-link">
+          <Link to='/Event' className="nav-link" /* data-widget="pushmenu" */ >
             <i className="nav-icon fas fa-edit" />
             <p>  Events </p>
           </Link>      
         </li>
    
         <li className="nav-item">
-          <Link to='/Receptionist' className="nav-link">
+          <Link to='/Receptionist' className="nav-link" /* data-widget="pushmenu" */ >
             <i className="nav-icon fas fa-table" />
             <p>Receptionists </p>
           </Link>       
@@ -75,10 +82,9 @@ const Sidebar = () => {
       </ul>
     </nav>
   </div>
-      <aside class="control-sidebar control-sidebar-dark">
-      </aside>
+      {/* <aside className="control-sidebar control-sidebar-dark">
+      </aside> */}
     </aside>
-
 
   )
 }

@@ -3,11 +3,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../API/config'
 import Container from '../components/Container'
-import { Modal  } from 'antd';
+import { Button, Modal  } from 'antd';
 import { Link } from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Event = () => {
     const [get,SetGet] = useState([])
@@ -24,6 +26,7 @@ const Event = () => {
     const [NUMBER, setNUMBER] = useState('')
     const [TRECEPT, setTRECEPT] = useState('')
     const [isModalOpenadd, setIsModalOpenadd] = useState(false);
+    const [isModaldel , setIsModeldel] = useState(false);
 
 
     const showModaladd = () => {
@@ -43,6 +46,18 @@ const Event = () => {
      setIsModalOpen(false);
    };
 
+   const showModaldelete = () => {
+    setIsModeldel(true);
+   }
+
+   const handleCanceldel = () => {
+    setIsModeldel(false)
+   }
+
+   const EventDeletetoast = () => {
+    toast.success("User Event Deleted Successfully")
+  };
+ 
 
    const UserAddSchema = Yup.object().shape({
     id: Yup.string()
@@ -161,8 +176,7 @@ const Event = () => {
 
     const submitAPI = await axios.put(`${BASE_URL}/edit-event`,updateSubmit)
       console.log(submitAPI)
-      getEvent();
-      
+      getEvent();      
      
   }
 
@@ -173,10 +187,18 @@ const Event = () => {
   return (
     <Container>
       <Helmet>
-
 <meta charSet="utf-8" />
 <title>Event</title>
 </Helmet>
+<ToastContainer
+        autoClose={2000}
+        position="top-center"
+        hideProgressBar
+        className="toast-container"
+        toastClassName="dark-toast"
+        theme="colored"
+        toastStyle={{ backgroundColor: '#6F0A12' }}
+      />  
           <div className='content-wrapper'>
     <section class="content-header">
       <div class="container-fluid">
@@ -204,15 +226,15 @@ const Event = () => {
             <tr>
               <th>S.No</th>
               <th>Event ID</th>
-              <th>Date</th>
-              <th >Title</th>
-              <th>Notes</th>
+              <th><b className='ml-3'>Date</b></th>
+              <th ><b className='ml-5'>Title</b></th>
+              <th><b className='ml-5'>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Notes</b> </th>
               <th>PackageType</th>
               <th>Contact No.</th>
               <th>Paper Attendence</th>
-              <th>URL</th>
+              <th><b className='ml-5'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; URL</b></th>
               <th>Type</th>
-              <th>Edit/Delete</th>
+              <th>Action</th>
             </tr>
           </thead>
           {get.map((event,index) => {
@@ -230,23 +252,44 @@ const Event = () => {
                   <td> {event.locationurl}</td>
                   <td>{event.type}</td>
                   <td onClick={()=> getupdateuserEvents(event.id)}><i type="button" class="fas fa-edit ml-3"  onClick={showModal}/>
-                  <i type="button" class="fas fa-trash ml-3"  onClick={ async()=> {
-                     let res = await axios.delete(`${BASE_URL}/delete-event`,{data:{
-                        id:event.id
-                      }})
-                      console.log(res);
-                      getEvent();
+                  <i type="button" class="fas fa-trash ml-3"  
+                  // onClick={ async()=> {
+                  //    let res = await axios.delete(`${BASE_URL}/delete-event`,{data:{
+                  //       id:event.id
+                  //     }})
+                  //     console.log(res);
+                  //     getEvent();
 
-                  }}/>
-                  
+                  // }}
+                  onClick={showModaldelete}
+                  />      
                  
                   </td>
-                </tr>             
-              </tbody>
+                </tr>                                   
+              </tbody>              
             )
-          })}
+          })}          
          
         </table>
+
+      {/* Delete Model Start */}
+      <Modal title="Delete Confirmation" open={isModaldel} /* onOk={handleOk} */ onCancel={handleCanceldel} footer={false}>
+        <p>Are you sure you want to delete user event? </p>
+        <button type="info" data-bs-dismiss="modal" className="btn text-white" style={{backgroundColor:"#6F0A12"}}
+           onClick={ async()=> {
+                     let res = await axios.delete(`${BASE_URL}/delete-event`,{data:{
+                        id: ID
+                      }})
+                      console.log(res);
+                      EventDeletetoast();
+                      handleCanceldel();
+                      getEvent();
+
+                  }}
+        >Delete</button>
+
+      </Modal>
+      {/* Delete Model End */}      
 
         {/* Add user Event Model Start*/}
 
@@ -288,7 +331,9 @@ const Event = () => {
                             console.log(Response)
                             if (Response.data.status === 200) {
                               // setIsModalOpen(false)
+                              getEvent();
                               resetForm({ values: '' });
+                              handleCanceladd()
                               // ReceptionistApi();
                             }
 
@@ -328,8 +373,7 @@ const Event = () => {
                                 <option value="Diamond">Diamond</option>
                                 <option value="Regular">Regular</option>
                                 <option value="Discount">Discount</option>
-                              </Field>
-                           
+                              </Field>                           
                             </div>
                             {errors.packagetype && touched.packagetype ? (
                               <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.packagetype}</div>
@@ -379,19 +423,13 @@ const Event = () => {
                             {errors.total_receptionist && touched.total_receptionist ? (
                               <div className="" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{errors.total_receptionist}</div>
                             ) : null}
-
-                            <div className="social-auth-links text-center mb-3" >
-                             
+                            <div className="social-auth-links text-center mb-3" >                             
                               <button className='btn btn-primary text-white ml-0' type="submit">Add</button>
                             </div>
                           </Form>
                         )}
                       </Formik>
                     </Modal>
-
-
-
-
 
         {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -515,8 +553,6 @@ const Event = () => {
       </div>
         </form>
         </Modal>
-
-
         {/* Update User Event Model End */}
       </div>     
     </div>  
@@ -524,10 +560,8 @@ const Event = () => {
 </div>
 </div>
 </section>
-
         </div>
         </Container>
-
   )
 }
 

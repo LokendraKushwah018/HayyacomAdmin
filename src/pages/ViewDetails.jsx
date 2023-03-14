@@ -9,11 +9,11 @@ import {Helmet} from "react-helmet"
 const ViewDetails = () => {
   const [edit, setEdit] = useState([])
   const [Id,setId] = useState([]) 
-   const [allowed,setAllowed] = useState('')
-   const [data,setData] = useState({userid: '' , eventID: '', Guest: ''})
-    const [get,setGet] = useState([])
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [eventID,setEventID] = useState('')
+  const [allowed,setAllowed] = useState('')
+  const [data,setData] = useState({userid: '' , eventID: '', Guest: ''})
+  const [get,setGet] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventID,setEventID] = useState('')
 
    const showModal = () => {
     setIsModalOpen(true);
@@ -62,7 +62,6 @@ const geteventUpdate = async(UniqueId,e) => {
   })
 }
 
-
 const notAssign = async() => {
    await axios({
     url: `${BASE_URL}not-assign-event/${views}`,
@@ -99,7 +98,6 @@ const AddEvent = async(e) => {
   }).catch((error) => {
    console.log(error);
   })
-
 }
 
 
@@ -123,13 +121,14 @@ const eventUpdate = async (e) => {
     viewUser()
 
   },[])
+
   return (
     <Container>
       <Helmet>
-<meta charSet="utf-8" />
-<title>Event Details</title>
-</Helmet>
-<div className='content-wrapper'>
+       <meta charSet="utf-8" />
+       <title>Event Details</title>
+      </Helmet>
+   <div className='content-wrapper'>
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -172,7 +171,7 @@ const eventUpdate = async (e) => {
               <th>Guest Allowed</th>
               <th>Total Receptionist</th>
               <th>Type</th>
-              <th>Edit/Delete</th>
+              <th>Action</th>
             </tr>
           </thead>
           {edit.map((data,index)=>{
@@ -202,8 +201,7 @@ const eventUpdate = async (e) => {
                       viewUser();
 
                   }}/> 
-                  </td>
-                     
+                  </td>                     
                 </tr>                     
               </tbody>
             )            

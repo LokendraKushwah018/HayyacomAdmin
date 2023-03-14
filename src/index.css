@@ -137,5 +137,9 @@ input::-webkit-inner-spin-button {
 }
 
 
-
+.input-phone-number input{
+  outline: none !important;
+  border:none !important;
+  box-shadow: none !important;
+}
 

@@ -7,12 +7,16 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../API/config';
 import {Helmet} from "react-helmet"
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 
 const Adminlogin = () => {
   const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState("password")
   const [error,setError] = useState('');
+  const [value,setValue] = useState('');
+
 
   const togglePassword = () => {
     if(passwordType === "password"){

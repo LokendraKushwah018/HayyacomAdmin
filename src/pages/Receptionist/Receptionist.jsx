@@ -7,7 +7,8 @@ import axios from 'axios'
 import { Helmet } from 'react-helmet'
 import { Field, Formik, Form } from 'formik'
 import * as Yup from 'yup';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Receptionist = () => {
   const [receptionistdata, setReceptionistData] = useState([]);
@@ -20,7 +21,7 @@ const Receptionist = () => {
   const [pwd, setPwd] = useState('')
   const [city, setCity] = useState('')
   const [error, setError] = useState('');
-
+  const [isModaldel , setIsModeldel] = useState(false);
   
   const showModal = () => {
     setIsModalOpen(true);
@@ -41,6 +42,18 @@ const Receptionist = () => {
   };
   const handleCancelid = () => {
     setIsModalOpenId(false);
+  };
+
+  const showModaldelete = () => {
+    setIsModeldel(true);
+   }
+
+   const handleCanceldel = () => {
+    setIsModeldel(false)
+   }
+
+   const EventDeletetoast = () => {
+    toast.success("User Event Deleted Successfully")
   };
 
   useEffect(() => {
@@ -80,14 +93,16 @@ const Receptionist = () => {
   const receptionistid = async (id) => {
     await axios.get(`${BASE_URL}get-receptionist/${id}`)
       .then((res) => {
-        setId(res.data.Data.id)
+        //  setId(res.data.Data.id)
         console.log(ID)
+        
         if (res.status === 200) {
           setIsModalOpenId(true);
         }
         console.log(res);
         const article = res.data.Data;
         setId(article.id);
+        console.log(article);
         setName(article.receptionistName);
         setNumber(article.phonenumber);
         setPwd(article.password);
@@ -124,6 +139,15 @@ const Receptionist = () => {
         <meta charSet="utf-8" />
         <title>Hayyacom Receptionist</title>
       </Helmet>
+      <ToastContainer
+        autoClose={2000}
+        position="top-center"
+        hideProgressBar
+        className="toast-container"
+        toastClassName="dark-toast"
+        theme="colored"
+        toastStyle={{ backgroundColor: '#6F0A12' }}
+      />  
       <div className='content-wrapper'>
         <section class="content-header">
           <div class="container-fluid">
@@ -132,8 +156,7 @@ const Receptionist = () => {
                 <h3>Receptionist</h3>
               </div>
               <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right mr-5">
-                 
+                <ol class="breadcrumb float-sm-right mr-5">                 
                   <Button type="none" style={{ backgroundColor: '#6F0A12', color: 'white' }} size='large' onClick={showModal}><b> Add Receptionist + </b></Button>
                 </ol>
               </div>
@@ -152,7 +175,7 @@ const Receptionist = () => {
                     <th>Phone Number</th>
                     <th>Password</th>
                     <th>City</th>
-                    <th>Edit / Delete</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 {receptionistdata.map((item, index) => {
@@ -167,7 +190,8 @@ const Receptionist = () => {
                         <td>{item.city}</td>
                         <td>
                           <i type="button" class="fas fa-edit ml-2" onClick={() => receptionistid(item.id)} />
-                          <i type="button" class="fas fa-trash ml-2" onClick={async () => {
+                          <i type="button" class="fas fa-trash ml-2"  /* onClick={showModaldelete} */
+                          onClick={async () => {
                             await axios.delete(`${BASE_URL}delete-receptionist`, {
                               data: {
                                 id: item.id
@@ -176,11 +200,13 @@ const Receptionist = () => {
                               .then((res) => {
                                 if (res.status === 200) {
                                   ReceptionistApi();
+                                  EventDeletetoast();
                                 }
                               }).catch((err) => {
                                 console.log(err);
                               })
-                          }} />
+                          }} 
+                          />
                         </td>
                       </tr>
                     </tbody>
@@ -192,6 +218,35 @@ const Receptionist = () => {
           </div>
         </div>
       </div>
+
+       {/* Delete Model Start */}
+       {/* <Modal title="Delete Confirmation" open={isModaldel} onCancel={handleCanceldel} footer={false}>
+        <p>Are you sure you want to delete user event? </p>
+        <button type="submit" data-bs-dismiss="modal" className="btn text-white" style={{backgroundColor:"#6F0A12"}}
+           onClick={async () => {
+            console.log(ID)
+            await axios.delete(`${BASE_URL}delete-receptionist`, {
+              data: {
+                id: ID
+              }
+            })
+              .then((res) => {
+                if (res.status === 200) {
+                  handleCanceldel()
+                  ReceptionistApi();
+                  EventDeletetoast();
+                }
+              }).catch((err) => {
+                console.log(err);
+              })
+          }} 
+        >Delete</button>
+
+      </Modal> */}
+      {/* Delete Model End */} 
+
+
+
        {/* Add Receptionist Model Start */}
       <Modal title=" Add Receptionist" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={false}>
         <div className="text-center" style={{ color: '#9D0305', fontSize: '14px', marginBottom: '10px', marginTop: '-15px' }}>{error}</div>
@@ -266,8 +321,7 @@ const Receptionist = () => {
               ) : null}
 
 
-              <div className="social-auth-links text-center mb-3" >
-               
+              <div className="social-auth-links text-center mb-3" >               
                 <button className='btn btn-primary text-white ml-0' type="submit">Add</button>
               </div>
             </Form>
